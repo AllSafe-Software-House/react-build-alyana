@@ -1580,41 +1580,40 @@ $(document).ready(function() {
 // Counter Function 
 
 function counter() {
-// Check if an end date is already stored in localStorage
-let countdownEndDate = localStorage.getItem('countdownEndDate');
+    // Set the end date to October 16, 2024
+    let countdownEndDate = new Date('2024-10-16T00:00:00');
 
-if (!countdownEndDate) {
-    // If not, set the end date to 35 days from now and store it
-    countdownEndDate = new Date();
-    countdownEndDate.setDate(countdownEndDate.getDate() + 35);
-    localStorage.setItem('countdownEndDate', countdownEndDate);
-} else {
-    // Convert the stored string back to a Date object
-    countdownEndDate = new Date(countdownEndDate);
+    // Store the end date in localStorage if it's not already stored
+    let storedDate = localStorage.getItem('countdownEndDate');
+    if (!storedDate) {
+        localStorage.setItem('countdownEndDate', countdownEndDate.toISOString());
+    } else {
+        countdownEndDate = new Date(storedDate);
+    }
+
+    const countdownTimer = setInterval(() => {
+        const now = new Date().getTime();
+        const timeLeft = countdownEndDate - now;
+
+        // Calculate days, hours, minutes, and seconds
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Display the result
+        document.getElementById('days').innerHTML = days;
+        document.getElementById('hours').innerHTML = hours;
+        document.getElementById('minutes').innerHTML = minutes;
+        document.getElementById('seconds').innerHTML = seconds;
+
+        // If the countdown is finished, display a message and clear localStorage
+        if (timeLeft < 0) {
+            clearInterval(countdownTimer);
+            document.getElementById('countdown').innerHTML = "Countdown Ended!";
+            localStorage.removeItem('countdownEndDate');  // Clear the saved end date
+        }
+    }, 1000);
 }
 
-const countdownTimer = setInterval(() => {
-    const now = new Date().getTime();
-    const timeLeft = countdownEndDate - now;
-
-    // Calculate days, hours, minutes, and seconds
-    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-    // Display the result
-    document.getElementById('days').innerHTML = days;
-    document.getElementById('hours').innerHTML = hours;
-    document.getElementById('minutes').innerHTML = minutes;
-    document.getElementById('seconds').innerHTML = seconds;
-
-    // If the countdown is finished, display a message and clear localStorage
-    if (timeLeft < 0) {
-        clearInterval(countdownTimer);
-        document.getElementById('countdown').innerHTML = "Countdown Ended!";
-        localStorage.removeItem('countdownEndDate');  // Clear the saved end date
-    }
-}, 1000);
-
-} counter()
+counter();
