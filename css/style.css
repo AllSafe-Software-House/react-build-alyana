@@ -613,7 +613,7 @@ label.message-text {
 .vert-middle {
   min-height: 700px;
   height: 100%;
-  align-items: center;
+  align-items: normal;
   display: flex;
 }
 

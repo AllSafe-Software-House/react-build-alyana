@@ -18,6 +18,9 @@
   .modal-content {
     padding: 50px 15px;
   }
+  .reveal img {
+    width: 45%;
+  }
 }
 
 @media only screen and (min-width: 991px) {
