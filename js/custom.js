@@ -546,7 +546,7 @@ $(document).ready(function() {
 
     var ripple = $('#page-ripple');
 
-    if (ripple.length &&  !isTouch) {
+    if (ripple.length) {
         ripple.ripples({
             resolution: 512,
             dropRadius: 10, //px
